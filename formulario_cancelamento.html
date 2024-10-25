@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário de Cancelamento</title>
+  
+  <!-- Link para o arquivo CSS externo -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Fonte Roboto do Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <h1>Formulário de Cancelamento</h1>
+
+  <div class="container">
+    <form id="formulario">
+      <!-- Número da Margem: Campo numérico obrigatório -->
+      <div class="form-group">
+        <label for="numero_margem">Número da Margem:</label>
+        <input type="number" id="numero_margem" name="numero_margem" required>
+      </div>
+
+      <!-- Nome do Solicitante: Campo de texto obrigatório que aceita apenas letras -->
+      <div class="form-group">
+        <label for="nome_solicitante">Nome do Solicitante:</label>
+        <input type="text" id="nome_solicitante" name="nome_solicitante" pattern="[A-Za-zÀ-ÖØ-öø-ÿ ]+" title="Apenas letras" required>
+      </div>
+
+      <!-- Vínculo: Campo de seleção com opções pré-definidas -->
+      <div class="form-group">
+        <label for="vinculo">Vínculo:</label>
+        <select id="vinculo" name="vinculo" required>
+          <option value="">Selecione...</option>
+          <option value="Aposentado">Aposentado</option>
+          <option value="Pensionista">Pensionista</option>
+          <option value="Efetivo">Efetivo</option>
+          <option value="Comissionado">Comissionado</option>
+        </select>
+      </div>
+
+      <!-- Data de Emissão do Cancelamento -->
+      <div class="form-group">
+        <label for="data_emissao">Data de Emissão do Cancelamento:</label>
+        <input type="date" id="data_emissao" name="data_emissao" required>
+      </div>
+
+      <!-- Servidor que Atendeu: Campo de seleção com opções pré-definidas -->
+      <div class="form-group">
+        <label for="servidor_atendeu">Servidor que Atendeu:</label>
+        <select id="servidor_atendeu" name="servidor_atendeu" required>
+          <option value="">Selecione...</option>
+          <option value="Nilza">Nilza</option>
+          <option value="Andressa">Andressa</option>
+          <option value="Carol">Carol</option>
+          <option value="Madu">Madu</option>
+          <option value="Gabriel">Gabriel</option>
+          <option value="Marcus">Marcus</option>
+          <option value="Linda">Linda</option>
+          <option value="Brenda">Brenda</option>
+          <option value="Aline">Aline</option>
+          <option value="Verônica">Verônica</option>
+          <option value="David">David</option>
+          <option value="Gabriella">Gabriella</option>
+          <option value="Ricardo">Ricardo</option>
+          <option value="Nathalia">Nathalia</option>
+          <option value="Nayde">Nayde</option>
+        </select>
+      </div>
+
+      <!-- Tipo de Documento -->
+      <div class="form-group">
+        <label for="tipo_documento">Tipo de Documento:</label>
+        <select id="tipo_documento" name="tipo_documento" required>
+          <option value="">Selecione...</option>
+          <option value="RG">RG</option>
+          <option value="CPF">CPF</option>
+          <option value="CNH">CNH</option>
+          <option value="Crachá">Crachá</option>
+        </select>
+      </div>
+
+      <!-- Assinatura -->
+      <div class="form-group">
+        <label>Assinatura:</label>
+        <canvas id="signature-pad"></canvas>
+        <div id="buttons">
+          <button type="button" id="clear">Limpar Assinatura</button>
+        </div>
+      </div>
+
+      <!-- Botão de Enviar -->
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <!-- Bibliotecas JavaScript -->
+  <!-- Biblioteca Signature Pad -->
+  <script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+  <!-- Biblioteca jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- Biblioteca jsPDF-AutoTable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <!-- Link para o arquivo JavaScript externo -->
+  <script src="script.js"></script>
+</body>
+</html>
