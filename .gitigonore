@@ -1,0 +1,25 @@
+# Node.js modules e dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de log
+logs
+*.log
+logs/
+
+# Pasta onde PDFs são gerados
+pdfs/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de ambiente e variáveis sensíveis
+.env
+
+# Arquivos de configuração específicos do sistema
+*.local
+*.env.local
+*.config.js

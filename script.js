@@ -20,8 +20,8 @@ document.getElementById('clear').addEventListener('click', function () {
 
 // Função para formatar a data no padrão DD/MM/AAAA
 function formatDate(dateStr) {
-  var parts = dateStr.split('-'); // Separa em [AAAA, MM, DD]
-  return parts[2] + '/' + parts[1] + '/' + parts[0]; // Retorna DD/MM/AAAA
+  var parts = dateStr.split('-'); // [AAAA, MM, DD]
+  return parts[2] + '/' + parts[1] + '/' + parts[0]; // DD/MM/AAAA
 }
 
 // Manipula o envio do formulário
@@ -31,10 +31,8 @@ document.getElementById('formulario').addEventListener('submit', function (e) {
   if (signaturePad.isEmpty()) {
     alert('Por favor, forneça sua assinatura.');
   } else {
-    var numeroMargem = document.getElementById('numero_margem').value;
-
     var data = {
-      'Número da Margem': numeroMargem,
+      'Número da Margem': document.getElementById('numero_margem').value,
       'Nome do Solicitante': document.getElementById('nome_solicitante').value,
       'Vínculo': document.getElementById('vinculo').value,
       'Data de Emissão do Cancelamento': formatDate(document.getElementById('data_emissao').value),
@@ -43,67 +41,28 @@ document.getElementById('formulario').addEventListener('submit', function (e) {
       'Assinatura': signaturePad.toDataURL('image/png')
     };
 
-    // Gera o PDF
-    generatePDF(data);
-
-    // Limpa o formulário após o download
-    document.getElementById('formulario').reset();
-    signaturePad.clear();
-
-    alert('Formulário enviado com sucesso!');
+    // Envia os dados ao servidor via POST
+    fetch('/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status === 'sucesso') {
+          alert('Formulário enviado com sucesso!');
+          // Limpa o formulário após o envio
+          document.getElementById('formulario').reset();
+          signaturePad.clear();
+        } else {
+          alert('Ocorreu um erro ao enviar o formulário.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro:', error);
+        alert('Ocorreu um erro ao enviar o formulário.');
+      });
   }
 });
-
-function generatePDF(data) {
-  // Cria um novo documento PDF
-  const { jsPDF } = window.jspdf;
-  var doc = new jsPDF();
-
-  // Adiciona o título
-  doc.setFontSize(16);
-  doc.setFont('helvetica', 'bold');
-  doc.text('Formulário de Cancelamento', 105, 20, null, null, 'center');
-
-  // Define os dados para a tabela
-  var tableData = [
-    ['Número da Margem', data['Número da Margem']],
-    ['Nome do Solicitante', data['Nome do Solicitante']],
-    ['Vínculo', data['Vínculo']],
-    ['Data de Emissão do Cancelamento', data['Data de Emissão do Cancelamento']],
-    ['Servidor que Atendeu', data['Servidor que Atendeu']],
-    ['Tipo de Documento', data['Tipo de Documento']]
-  ];
-
-  // Adiciona a tabela ao PDF
-  doc.autoTable({
-    startY: 30,
-    head: [['Campo', 'Valor']],
-    body: tableData,
-    styles: {
-      fontSize: 12
-    },
-    headStyles: {
-      fillColor: [255, 204, 204], // Cor de fundo do cabeçalho
-      textColor: 0,
-      fontStyle: 'bold'
-    },
-    columnStyles: {
-      0: { cellWidth: 60 }, // Largura da coluna dos campos
-      1: { cellWidth: 120 } // Largura da coluna dos valores
-    }
-  });
-
-  // Adiciona a assinatura
-  var imgData = data['Assinatura'];
-  var imgWidth = 100;
-  var imgHeight = 50;
-  var positionY = doc.lastAutoTable.finalY + 20;
-
-  doc.setFont('helvetica', 'bold');
-  doc.text('Assinatura:', 14, positionY);
-
-  doc.addImage(imgData, 'PNG', 14, positionY + 5, imgWidth, imgHeight);
-
-  // Salva o PDF com o nome baseado no número da margem
-  doc.save(data['Número da Margem'] + '.pdf');
-}
